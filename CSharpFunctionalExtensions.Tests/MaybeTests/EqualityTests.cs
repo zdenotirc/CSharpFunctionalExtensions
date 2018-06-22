@@ -10,8 +10,8 @@ namespace CSharpFunctionalExtensions.Tests.MaybeTests
         public void Two_maybes_of_the_same_content_are_equal()
         {
             var instance = new MyClass();
-            Maybe<MyClass> maybe1 = instance;
-            Maybe<MyClass> maybe2 = instance;
+            Option<MyClass> maybe1 = instance;
+            Option<MyClass> maybe2 = instance;
 
             bool equals1 = maybe1.Equals(maybe2);
             bool equals2 = ((object)maybe1).Equals(maybe2);
@@ -29,8 +29,8 @@ namespace CSharpFunctionalExtensions.Tests.MaybeTests
         [Fact]
         public void Two_maybes_are_not_equal_if_differ()
         {
-            Maybe<MyClass> maybe1 = new MyClass();
-            Maybe<MyClass> maybe2 = new MyClass();
+            Option<MyClass> maybe1 = new MyClass();
+            Option<MyClass> maybe2 = new MyClass();
 
             bool equals1 = maybe1.Equals(maybe2);
             bool equals2 = ((object)maybe1).Equals(maybe2);
@@ -48,8 +48,8 @@ namespace CSharpFunctionalExtensions.Tests.MaybeTests
         [Fact]
         public void Two_empty_maybes_are_equal()
         {
-            Maybe<MyClass> maybe1 = null;
-            Maybe<MyClass> maybe2 = null;
+            Option<MyClass> maybe1 = null;
+            Option<MyClass> maybe2 = null;
 
             bool equals1 = maybe1.Equals(maybe2);
             bool equals2 = ((object)maybe1).Equals(maybe2);
@@ -67,8 +67,8 @@ namespace CSharpFunctionalExtensions.Tests.MaybeTests
         [Fact]
         public void Two_maybes_are_not_equal_if_one_of_them_empty()
         {
-            Maybe<MyClass> maybe1 = new MyClass();
-            Maybe<MyClass> maybe2 = null;
+            Option<MyClass> maybe1 = new MyClass();
+            Option<MyClass> maybe2 = null;
 
             bool equals1 = maybe1.Equals(maybe2);
             bool equals2 = ((object)maybe1).Equals(maybe2);
@@ -87,13 +87,13 @@ namespace CSharpFunctionalExtensions.Tests.MaybeTests
         public void Can_compare_maybe_to_underlying_type()
         {
             var instance = new MyClass();
-            Maybe<MyClass> maybe = instance;
+            Option<MyClass> option = instance;
 
-            bool equals1 = maybe.Equals(instance);
-            bool equals2 = ((object)maybe).Equals(instance);
-            bool equals3 = maybe == instance;
-            bool equals4 = maybe != instance;
-            bool equals5 = maybe.GetHashCode() == instance.GetHashCode();
+            bool equals1 = option.Equals(instance);
+            bool equals2 = ((object)option).Equals(instance);
+            bool equals3 = option == instance;
+            bool equals4 = option != instance;
+            bool equals5 = option.GetHashCode() == instance.GetHashCode();
 
             equals1.Should().BeTrue();
             equals2.Should().BeTrue();
@@ -106,10 +106,10 @@ namespace CSharpFunctionalExtensions.Tests.MaybeTests
         public void Can_compare_underlying_type_to_maybe()
         {
             var instance = new MyClass();
-            Maybe<MyClass> maybe = instance;
+            Option<MyClass> option = instance;
 
-            bool equals1 = instance == maybe;
-            bool equals2 = instance != maybe;
+            bool equals1 = instance == option;
+            bool equals2 = instance != option;
 
             equals1.Should().BeTrue();
             equals2.Should().BeFalse();

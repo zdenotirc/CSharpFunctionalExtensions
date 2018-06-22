@@ -14,7 +14,7 @@ namespace CSharpFunctionalExtensions.Examples.ResultExtensions
                 .OnBoth(result => result.IsSuccess ? "Ok" : result.Error);
         }
 
-        public Maybe<Customer> GetById(long id)
+        public Option<Customer> GetById(long id)
         {
             return new Customer();
         }

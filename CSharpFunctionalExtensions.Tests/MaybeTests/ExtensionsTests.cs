@@ -10,9 +10,9 @@ namespace CSharpFunctionalExtensions.Tests.MaybeTests
         public void Unwrap_extracts_value_if_not_null()
         {
             var instance = new MyClass();
-            Maybe<MyClass> maybe = instance;
+            Option<MyClass> option = instance;
 
-            MyClass myClass = maybe.Unwrap();
+            MyClass myClass = option.Unwrap();
 
             myClass.Should().Be(instance);
         }
@@ -20,9 +20,9 @@ namespace CSharpFunctionalExtensions.Tests.MaybeTests
         [Fact]
         public void Unwrap_extracts_null_if_no_value()
         {
-            Maybe<MyClass> maybe = null;
+            Option<MyClass> option = null;
 
-            MyClass myClass = maybe.Unwrap();
+            MyClass myClass = option.Unwrap();
 
             myClass.Should().BeNull();
         }
@@ -30,9 +30,9 @@ namespace CSharpFunctionalExtensions.Tests.MaybeTests
         [Fact]
         public void Can_use_selector_in_Unwrap()
         {
-            Maybe<MyClass> maybe = new MyClass { Property = "Some value" };
+            Option<MyClass> option = new MyClass { Property = "Some value" };
 
-            string value = maybe.Unwrap(x => x.Property);
+            string value = option.Unwrap(x => x.Property);
 
             value.Should().Be("Some value");
         }
@@ -40,9 +40,9 @@ namespace CSharpFunctionalExtensions.Tests.MaybeTests
         [Fact]
         public void Can_use_default_value_in_Unwrap()
         {
-            Maybe<string> maybe = null;
+            Option<string> option = null;
 
-            string value = maybe.Unwrap("");
+            string value = option.Unwrap("");
 
             value.Should().Be("");
         }
@@ -51,9 +51,9 @@ namespace CSharpFunctionalExtensions.Tests.MaybeTests
         public void ToResult_returns_success_if_value_exists()
         {
             var instance = new MyClass();
-            Maybe<MyClass> maybe = instance;
+            Option<MyClass> option = instance;
 
-            Result<MyClass> result = maybe.ToResult("Error");
+            Result<MyClass> result = option.ToResult("Error");
 
             result.IsSuccess.Should().BeTrue();
             result.Value.Should().Be(instance);
@@ -62,9 +62,9 @@ namespace CSharpFunctionalExtensions.Tests.MaybeTests
         [Fact]
         public void ToResult_returns_failure_if_no_value()
         {
-            Maybe<MyClass> maybe = null;
+            Option<MyClass> option = null;
 
-            Result<MyClass> result = maybe.ToResult("Error");
+            Result<MyClass> result = option.ToResult("Error");
 
             result.IsSuccess.Should().BeFalse();
             result.Error.Should().Be("Error");
@@ -74,9 +74,9 @@ namespace CSharpFunctionalExtensions.Tests.MaybeTests
         public void Where_returns_value_if_predicate_returns_true()
         {
             var instance = new MyClass { Property = "Some value" };
-            Maybe<MyClass> maybe = instance;
+            Option<MyClass> option = instance;
 
-            Maybe<MyClass> maybe2 = maybe.Where(x => x.Property == "Some value");
+            Option<MyClass> maybe2 = option.Where(x => x.Property == "Some value");
 
             maybe2.HasValue.Should().BeTrue();
             maybe2.Value.Should().Be(instance);
@@ -86,9 +86,9 @@ namespace CSharpFunctionalExtensions.Tests.MaybeTests
         public void Where_returns_no_value_if_predicate_returns_false()
         {
             var instance = new MyClass { Property = "Some value" };
-            Maybe<MyClass> maybe = instance;
+            Option<MyClass> option = instance;
 
-            Maybe<MyClass> maybe2 = maybe.Where(x => x.Property == "Different value");
+            Option<MyClass> maybe2 = option.Where(x => x.Property == "Different value");
 
             maybe2.HasValue.Should().BeFalse();
         }
@@ -96,9 +96,9 @@ namespace CSharpFunctionalExtensions.Tests.MaybeTests
         [Fact]
         public void Where_returns_no_value_if_initial_maybe_is_null()
         {
-            Maybe<MyClass> maybe = null;
+            Option<MyClass> option = null;
 
-            Maybe<MyClass> maybe2 = maybe.Where(x => x.Property == "Some value");
+            Option<MyClass> maybe2 = option.Where(x => x.Property == "Some value");
 
             maybe2.HasValue.Should().BeFalse();
         }
@@ -106,9 +106,9 @@ namespace CSharpFunctionalExtensions.Tests.MaybeTests
         [Fact]
         public void Select_returns_new_maybe()
         {
-            Maybe<MyClass> maybe = new MyClass { Property = "Some value" };
+            Option<MyClass> option = new MyClass { Property = "Some value" };
 
-            Maybe<string> maybe2 = maybe.Select(x => x.Property);
+            Option<string> maybe2 = option.Select(x => x.Property);
 
             maybe2.HasValue.Should().BeTrue();
             maybe2.Value.Should().Be("Some value");
@@ -117,9 +117,9 @@ namespace CSharpFunctionalExtensions.Tests.MaybeTests
         [Fact]
         public void Select_returns_no_value_if_no_value_passed_in()
         {
-            Maybe<MyClass> maybe = null;
+            Option<MyClass> option = null;
 
-            Maybe<string> maybe2 = maybe.Select(x => x.Property);
+            Option<string> maybe2 = option.Select(x => x.Property);
 
             maybe2.HasValue.Should().BeFalse();
         }
@@ -127,9 +127,9 @@ namespace CSharpFunctionalExtensions.Tests.MaybeTests
         [Fact]
         public void Bind_returns_new_maybe()
         {
-            Maybe<MyClass> maybe = new MyClass { Property = "Some value" };
+            Option<MyClass> option = new MyClass { Property = "Some value" };
 
-            Maybe<string> maybe2 = maybe.Select(x => GetPropertyIfExists(x));
+            Option<string> maybe2 = option.Select(x => GetPropertyIfExists(x));
 
             maybe2.HasValue.Should().BeTrue();
             maybe2.Value.Should().Be("Some value");
@@ -138,9 +138,9 @@ namespace CSharpFunctionalExtensions.Tests.MaybeTests
         [Fact]
         public void Bind_returns_no_value_if_internal_method_returns_no_value()
         {
-            Maybe<MyClass> maybe = new MyClass { Property = null };
+            Option<MyClass> option = new MyClass { Property = null };
 
-            Maybe<string> maybe2 = maybe.Select(x => GetPropertyIfExists(x));
+            Option<string> maybe2 = option.Select(x => GetPropertyIfExists(x));
 
             maybe2.HasValue.Should().BeFalse();
         }
@@ -149,9 +149,9 @@ namespace CSharpFunctionalExtensions.Tests.MaybeTests
         public void Execute_executes_action()
         {
             string property = null;
-            Maybe<MyClass> maybe = new MyClass { Property = "Some value" };
+            Option<MyClass> option = new MyClass { Property = "Some value" };
 
-            maybe.Execute(x => property = x.Property);
+            option.Execute(x => property = x.Property);
 
             property.Should().Be("Some value");
         }
@@ -159,9 +159,9 @@ namespace CSharpFunctionalExtensions.Tests.MaybeTests
         [Fact]
         public void Unwrap_supports_NET_value_types()
         {
-            Maybe<MyClass> maybe = new MyClass { IntProperty = 42 };
+            Option<MyClass> option = new MyClass { IntProperty = 42 };
 
-            int integer = maybe.Select(x => x.IntProperty).Unwrap();
+            int integer = option.Select(x => x.IntProperty).Unwrap();
 
             integer.Should().Be(42);
         }
@@ -169,15 +169,15 @@ namespace CSharpFunctionalExtensions.Tests.MaybeTests
         [Fact]
         public void Unwrap_returns_default_for_NET_value_types()
         {
-            Maybe<MyClass> maybe = null;
+            Option<MyClass> option = null;
 
-            int integer = maybe.Select(x => x.IntProperty).Unwrap();
+            int integer = option.Select(x => x.IntProperty).Unwrap();
 
             integer.Should().Be(0);
         }
 
 
-        private static Maybe<string> GetPropertyIfExists(MyClass myClass)
+        private static Option<string> GetPropertyIfExists(MyClass myClass)
         {
             return myClass.Property;
         }

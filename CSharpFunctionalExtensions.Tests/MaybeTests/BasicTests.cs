@@ -9,38 +9,38 @@ namespace CSharpFunctionalExtensions.Tests.MaybeTests
         [Fact]
         public void Can_create_a_nullable_maybe()
         {
-            Maybe<MyClass> maybe = null;
+            Option<MyClass> option = null;
 
-            maybe.HasValue.Should().BeFalse();
-            maybe.HasNoValue.Should().BeTrue();
+            option.HasValue.Should().BeFalse();
+            option.HasNoValue.Should().BeTrue();
         }
 
         [Fact]
         public void Can_create_a_maybe_none()
         {
-            Maybe<MyClass> maybe = Maybe<MyClass>.None;
+            Option<MyClass> option = Option<MyClass>.None;
 
-            maybe.HasValue.Should().BeFalse();
-            maybe.HasNoValue.Should().BeTrue();
+            option.HasValue.Should().BeFalse();
+            option.HasNoValue.Should().BeTrue();
         }
 
         [Fact]
         public void Nullable_maybe_is_same_as_maybe_none()
         {
-            Maybe<MyClass> nullableMaybe = null;
-            Maybe<MyClass> maybeNone = Maybe<MyClass>.None;
+            Option<MyClass> nullableOption = null;
+            Option<MyClass> optionNone = Option<MyClass>.None;
 
-            nullableMaybe.Should().Be(maybeNone);
+            nullableOption.Should().Be(optionNone);
         }
 
         [Fact]
         public void Cannot_access_Value_if_none()
         {
-            Maybe<MyClass> maybe = null;
+            Option<MyClass> option = null;
 
             Action action = () =>
             {
-                MyClass myClass = maybe.Value;
+                MyClass myClass = option.Value;
             };
 
             action.ShouldThrow<InvalidOperationException>();
@@ -51,19 +51,19 @@ namespace CSharpFunctionalExtensions.Tests.MaybeTests
         {
             var instance = new MyClass();
 
-            Maybe<MyClass> maybe = instance;
+            Option<MyClass> option = instance;
 
-            maybe.HasValue.Should().BeTrue();
-            maybe.HasNoValue.Should().BeFalse();
-            maybe.Value.Should().Be(instance);
+            option.HasValue.Should().BeTrue();
+            option.HasNoValue.Should().BeFalse();
+            option.Value.Should().Be(instance);
         }
 
         [Fact]
         public void ToString_returns_No_Value_if_no_value()
         {
-            Maybe<MyClass> maybe = null;
+            Option<MyClass> option = null;
 
-            string str = maybe.ToString();
+            string str = option.ToString();
 
             str.Should().Be("No value");
         }
@@ -71,9 +71,9 @@ namespace CSharpFunctionalExtensions.Tests.MaybeTests
         [Fact]
         public void ToString_returns_underlying_objects_string_representation()
         {
-            Maybe<MyClass> maybe = new MyClass();
+            Option<MyClass> option = new MyClass();
 
-            string str = maybe.ToString();
+            string str = option.ToString();
 
             str.Should().Be("My custom class");
         }

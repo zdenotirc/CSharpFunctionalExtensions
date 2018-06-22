@@ -28,12 +28,12 @@ namespace CSharpFunctionalExtensions.Examples.ResultExtensions
                 .OnBoth(result => result.IsSuccess ? "Ok" : result.Error);
         }
 
-        public Task<Maybe<Customer>> GetByIdAsync(long id)
+        public Task<Option<Customer>> GetByIdAsync(long id)
         {
-            return Task.FromResult((Maybe<Customer>)new Customer());
+            return Task.FromResult((Option<Customer>)new Customer());
         }
 
-        public Maybe<Customer> GetById(long id)
+        public Option<Customer> GetById(long id)
         {
             return new Customer();
         }

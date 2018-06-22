@@ -19,7 +19,7 @@ namespace CSharpFunctionalExtensions.Examples.ResultExtensions
                 .OnBoth(result => result.IsSuccess ? "OK" : result.Error);
         }
 
-        private Maybe<Customer> GetById(long id)
+        private Option<Customer> GetById(long id)
         {
             return new Customer();
         }

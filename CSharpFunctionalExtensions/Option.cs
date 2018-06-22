@@ -3,7 +3,7 @@
 
 namespace CSharpFunctionalExtensions
 {
-    public struct Maybe<T> : IEquatable<Maybe<T>>
+    public struct Option<T> : IEquatable<Option<T>>
     {
         private readonly T _value;
         public T Value
@@ -17,45 +17,47 @@ namespace CSharpFunctionalExtensions
             }
         }
 
-        public static Maybe<T> None => new Maybe<T>();
+        public static Option<T> None => new Option<T>();
 
         public bool HasValue => _value != null;
         public bool HasNoValue => !HasValue;
 
-        private Maybe(T value)
+        private Option(T value)
         {
             _value = value;
         }
 
-        public static implicit operator Maybe<T>(T value)
+        public static implicit operator Option<T>(T value)
         {
-            return new Maybe<T>(value);
+            return new Option<T>(value);
         }
 
-        public static Maybe<T> From(T obj)
+        public static Option<T> From(T obj)
         {
-            return new Maybe<T>(obj);
+            return new Option<T>(obj);
         }
 
-        public static bool operator ==(Maybe<T> maybe, T value)
+        public static bool operator ==(Option<T> option, T value)
         {
-            if (maybe.HasNoValue)
+            if (option.HasNoValue)
+            {
                 return false;
+            }
 
-            return maybe.Value.Equals(value);
+            return option.Value.Equals(value);
         }
 
-        public static bool operator !=(Maybe<T> maybe, T value)
+        public static bool operator !=(Option<T> option, T value)
         {
-            return !(maybe == value);
+            return !(option == value);
         }
 
-        public static bool operator ==(Maybe<T> first, Maybe<T> second)
+        public static bool operator ==(Option<T> first, Option<T> second)
         {
             return first.Equals(second);
         }
 
-        public static bool operator !=(Maybe<T> first, Maybe<T> second)
+        public static bool operator !=(Option<T> first, Option<T> second)
         {
             return !(first == second);
         }
@@ -64,41 +66,41 @@ namespace CSharpFunctionalExtensions
         {
             if (obj is T)
             {
-                obj = new Maybe<T>((T)obj);
+                obj = new Option<T>((T)obj);
             }
 
-            if (!(obj is Maybe<T>))
+            if (!(obj is Option<T>))
+            {
                 return false;
+            }
 
-            var other = (Maybe<T>)obj;
+            var other = (Option<T>)obj;
             return Equals(other);
         }
 
-        public bool Equals(Maybe<T> other)
+        public bool Equals(Option<T> other)
         {
             if (HasNoValue && other.HasNoValue)
+            {
                 return true;
+            }
 
             if (HasNoValue || other.HasNoValue)
+            {
                 return false;
+            }
 
             return _value.Equals(other._value);
         }
 
         public override int GetHashCode()
         {
-            if (HasNoValue)
-                return 0;
-
-            return _value.GetHashCode();
+            return HasNoValue ? 0 : _value.GetHashCode();
         }
 
         public override string ToString()
         {
-            if (HasNoValue)
-                return "No value";
-
-            return Value.ToString();
+            return HasNoValue ? "No value" : Value.ToString();
         }
     }
 }

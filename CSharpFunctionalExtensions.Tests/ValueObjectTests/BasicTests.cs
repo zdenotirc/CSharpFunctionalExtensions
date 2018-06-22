@@ -95,25 +95,7 @@ namespace CSharpFunctionalExtensions.Tests.ValueObjectTests
             }
         }
 
-        public class Address2 : ValueObject
-        {
-            public string Street { get; }
-            public string City { get; }
-
-            public Address2(string street, string city)
-            {
-                Street = street;
-                City = city;
-            }
-
-            protected override IEnumerable<object> GetEqualityComponents()
-            {
-                yield return Street;
-                yield return City;
-            }
-        }
-
-        public class Address : ValueObject<Address>
+        public class Address : ValueObject
         {
             public string Street { get; }
             public string City { get; }
@@ -124,19 +106,10 @@ namespace CSharpFunctionalExtensions.Tests.ValueObjectTests
                 City = city;
             }
 
-            protected override bool EqualsCore(Address other)
+            protected override IEnumerable<object> GetEqualityComponents()
             {
-                return Street == other.Street && City == other.City;
-            }
-
-            protected override int GetHashCodeCore()
-            {
-                unchecked
-                {
-                    int hashCode = Street.GetHashCode();
-                    hashCode = (hashCode * 397) ^ City.GetHashCode();
-                    return hashCode;
-                }
+                yield return Street;
+                yield return City;
             }
         }
 
@@ -150,9 +123,9 @@ namespace CSharpFunctionalExtensions.Tests.ValueObjectTests
                 Country = country;
             }
 
-            protected override bool EqualsCore(Address other)
+            protected override IEnumerable<object> GetEqualityComponents()
             {
-                return other is DerivedAddress derived && base.EqualsCore(derived) && Country == derived.Country;
+                yield return Country;
             }
         }
     }
