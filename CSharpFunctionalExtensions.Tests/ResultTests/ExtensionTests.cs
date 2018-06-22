@@ -32,25 +32,14 @@ namespace CSharpFunctionalExtensions.Tests.ResultTests
         [Fact]
         public void Should_exexcute_action_with_result_on_generic_failure()
         {
-            string myError = string.Empty;
+            Error myError = _errorMessage;
 
-            Result<MyClass> myResult = Result.Fail<MyClass>(_errorMessage);
+            Result<MyClass> myResult = Result.Fail<MyClass>(myError);
             myResult.OnFailure(error => myError = error);
 
-            myError.Should().Be(_errorMessage);
+            myError.Should().Be(myError);
         }
 
-        [Fact]
-        public void Should_exexcute_action_with_error_object_on_generic_failure()
-        {
-            string myError = string.Empty;
-
-            Result<MyClass, MyClass> myResult = Result.Fail<MyClass, MyClass>(new MyClass {Property = _errorMessage});
-            myResult.OnFailure(error => myError = error.Property);
-
-            myError.Should().Be(_errorMessage);
-        }
-        
         private class MyClass
         {
             public string Property { get; set; }

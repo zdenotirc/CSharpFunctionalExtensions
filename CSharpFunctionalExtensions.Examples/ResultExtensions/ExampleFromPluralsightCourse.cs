@@ -11,7 +11,7 @@ namespace CSharpFunctionalExtensions.Examples.ResultExtensions
                 .Ensure(customer => customer.CanBePromoted(), "The customer has the highest status possible")
                 .OnSuccess(customer => customer.Promote())
                 .OnSuccess(customer => gateway.SendPromotionNotification(customer.Email))
-                .OnBoth(result => result.IsSuccess ? "Ok" : result.Error);
+                .OnBoth(result => result.IsSuccess ? "Ok" : result.Error.Message);
         }
 
         public Option<Customer> GetById(long id)

@@ -10,9 +10,10 @@ namespace CSharpFunctionalExtensions.Tests.ResultTests
         [Fact]
         public void Can_create_a_non_generic_version()
         {
-            Result result = Result.Fail("Error message");
+            Error error = "Error message";
+            Result result = Result.Fail(error);
 
-            result.Error.Should().Be("Error message");
+            result.Error.Should().Be(error);
             result.IsFailure.Should().Be(true);
             result.IsSuccess.Should().Be(false);
         }
@@ -20,9 +21,10 @@ namespace CSharpFunctionalExtensions.Tests.ResultTests
         [Fact]
         public void Can_create_a_generic_version()
         {
-            Result<MyClass> result = Result.Fail<MyClass>("Error message");
+            Error error = "Error message";
+            Result<MyClass> result = Result.Fail<MyClass>(error);
 
-            result.Error.Should().Be("Error message");
+            result.Error.Should().Be(error);
             result.IsFailure.Should().Be(true);
             result.IsSuccess.Should().Be(false);
         }

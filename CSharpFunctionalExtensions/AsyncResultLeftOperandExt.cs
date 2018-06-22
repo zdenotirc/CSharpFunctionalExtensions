@@ -129,14 +129,14 @@ namespace CSharpFunctionalExtensions
         }
 
         public static async Task<Result<T>> OnFailure<T>(
-            this Task<Result<T>> resultTask, Action<string> action, bool continueOnCapturedContext = true)
+            this Task<Result<T>> resultTask, Action<Error> action, bool continueOnCapturedContext = true)
         {
             Result<T> result = await resultTask.ConfigureAwait(continueOnCapturedContext);
             return result.OnFailure(action);
         }
 
         public static async Task<Result> OnFailure(
-            this Task<Result> resultTask, Action<string> action, bool continueOnCapturedContext = true)
+            this Task<Result> resultTask, Action<Error> action, bool continueOnCapturedContext = true)
         {
             Result result = await resultTask.ConfigureAwait(continueOnCapturedContext);
             return result.OnFailure(action);

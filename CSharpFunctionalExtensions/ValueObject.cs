@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 
 namespace CSharpFunctionalExtensions
@@ -16,7 +17,7 @@ namespace CSharpFunctionalExtensions
                 return false;
             }
 
-            if (GetType() != obj.GetType())
+            if (GetType() != obj.GetType() /* && !obj.GetType().GetTypeInfo().IsSubclassOf(GetType().GetTypeInfo())*/)
             {
                 throw new ArgumentException(
                     $"Invalid comparison of Value Objects of different types: {GetType()} and {obj.GetType()}");

@@ -11,7 +11,7 @@ namespace CSharpFunctionalExtensions.Tests.ValueObjectTests
         public void Derived_value_objects_dont_match()
         {
             var address = new Address("Street", "City");
-            var derivedAddress = new DerivedAddress("Country", "Street", "City");
+            var derivedAddress =(Address)new DerivedAddress("Country", "Street", "City");
 
             address.Equals(derivedAddress).Should().BeFalse();
             derivedAddress.Equals(address).Should().BeFalse();
@@ -125,6 +125,8 @@ namespace CSharpFunctionalExtensions.Tests.ValueObjectTests
 
             protected override IEnumerable<object> GetEqualityComponents()
             {
+                yield return Street;
+                yield return City;
                 yield return Country;
             }
         }

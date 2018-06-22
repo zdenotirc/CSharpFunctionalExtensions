@@ -1,8 +1,7 @@
 ﻿using FluentAssertions;
 using Xunit;
 
-
-namespace CSharpFunctionalExtensions.Tests.MaybeTests
+namespace CSharpFunctionalExtensions.Tests.OptionTests
 {
     public class ExtensionsTests
     {
@@ -63,11 +62,12 @@ namespace CSharpFunctionalExtensions.Tests.MaybeTests
         public void ToResult_returns_failure_if_no_value()
         {
             Option<MyClass> option = null;
+            Error error = "Error";
 
-            Result<MyClass> result = option.ToResult("Error");
+            Result<MyClass> result = option.ToResult(error);
 
             result.IsSuccess.Should().BeFalse();
-            result.Error.Should().Be("Error");
+            result.Error.Should().Be(error);
         }
 
         [Fact]

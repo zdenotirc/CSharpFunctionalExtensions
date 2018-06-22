@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard1.3;net40;net45;net461</TargetFrameworks>
     <PackageId>CSharpFunctionalExtensions</PackageId>
@@ -16,18 +15,15 @@
     <AssemblyVersion>1.10.0.0</AssemblyVersion>
     <FileVersion>1.10.0.0</FileVersion>
   </PropertyGroup>
-
   <!-- .net 4.0 doesn't have async support and Microsoft.Bcl.Async doesn't work because of the interactions 
        between it's dependency chain and the multi-framework build. Howver the AsyncTargetingPack does. -->
   <ItemGroup Condition="'$(TargetFramework)' == 'net40'">
     <PackageReference Include="Microsoft.CompilerServices.AsyncTargetingPack" />
   </ItemGroup>
-
   <!-- Standard1.3 doesn't have ISerializable and needs an additional reference -->
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
     <PackageReference Include="System.Runtime.Serialization.Formatters" Version="4.3.0" />
   </ItemGroup>
-
   <!-- Set titles so the dlls are distinguishable from each other -->
   <PropertyGroup Condition="'$(TargetFramework)'=='net40'">
     <AssemblyTitle>CSharpFunctionalExtensions .NET 4.0</AssemblyTitle>
@@ -44,5 +40,4 @@
   <PropertyGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
     <AssemblyTitle>CSharpFunctionalExtensions .NET Standard 2.0</AssemblyTitle>
   </PropertyGroup>
-
 </Project>

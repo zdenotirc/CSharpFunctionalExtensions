@@ -4,10 +4,10 @@ namespace CSharpFunctionalExtensions
 {
     public static class OptionExt
     {
-        public static Result<T> ToResult<T>(this Option<T> option, string errorMessage)
+        public static Result<T> ToResult<T>(this Option<T> option, Error error)
         {
             return option.HasNoValue 
-                ? Result.Fail<T>(errorMessage) 
+                ? Result.Fail<T>(error) 
                 : Result.Ok(option.Value);
         }
 

@@ -237,7 +237,7 @@ namespace CSharpFunctionalExtensions
         }
 
         public static async Task<Result<T>> OnFailure<T>(
-            this Task<Result<T>> resultTask, Func<string, Task> func, bool continueOnCapturedContext = true)
+            this Task<Result<T>> resultTask, Func<Error, Task> func, bool continueOnCapturedContext = true)
         {
             Result<T> result = await resultTask.ConfigureAwait(continueOnCapturedContext);
 
