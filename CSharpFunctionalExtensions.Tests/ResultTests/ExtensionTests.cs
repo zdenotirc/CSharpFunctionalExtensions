@@ -1,6 +1,9 @@
 ﻿using FluentAssertions;
 using Xunit;
 
+using static CSharpFunctionalExtensions.F;
+using Unit = System.ValueTuple;
+
 namespace CSharpFunctionalExtensions.Tests.ResultTests
 {
     public class ExtensionTests
@@ -12,7 +15,7 @@ namespace CSharpFunctionalExtensions.Tests.ResultTests
         {
             bool myBool = false;
 
-            Result myResult = Result.Fail(_errorMessage);
+            var myResult = Failure<Unit>(_errorMessage);
             myResult.OnFailure(() => myBool = true);
 
             myBool.Should().Be(true);
@@ -23,7 +26,7 @@ namespace CSharpFunctionalExtensions.Tests.ResultTests
         {
             bool myBool = false;
 
-            Result<MyClass> myResult = Result.Fail<MyClass>(_errorMessage);
+            Result<MyClass> myResult = Failure(_errorMessage);
             myResult.OnFailure(() => myBool = true);
 
             myBool.Should().Be(true);
@@ -34,7 +37,7 @@ namespace CSharpFunctionalExtensions.Tests.ResultTests
         {
             Error myError = _errorMessage;
 
-            Result<MyClass> myResult = Result.Fail<MyClass>(myError);
+            Result<MyClass> myResult = Failure(myError);
             myResult.OnFailure(error => myError = error);
 
             myError.Should().Be(myError);

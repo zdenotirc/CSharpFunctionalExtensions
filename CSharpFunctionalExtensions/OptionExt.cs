@@ -1,4 +1,5 @@
 ﻿using System;
+using static CSharpFunctionalExtensions.F;
 
 namespace CSharpFunctionalExtensions
 {
@@ -6,9 +7,16 @@ namespace CSharpFunctionalExtensions
     {
         public static Result<T> ToResult<T>(this Option<T> option, Error error)
         {
-            return option.HasNoValue 
-                ? Result.Fail<T>(error) 
-                : Result.Ok(option.Value);
+            return option.IsNone 
+                ? Failure(error) 
+                : Success(option.Value);
+        }
+        
+        public static Result<T> ToResult<T>(this Option<T> opt, Func<Error> error)
+        {
+            return opt.Match(
+                () => Failure(error()),
+                (t) => Success(t));
         }
 
         public static T Unwrap<T>(this Option<T> option, T defaultValue = default(T))
@@ -19,14 +27,14 @@ namespace CSharpFunctionalExtensions
         public static TResult Unwrap<T, TResult>(
             this Option<T> option, Func<T, TResult> selector, TResult defaultValue = default(TResult))
         {
-            return option.HasValue 
+            return option.IsSome 
                 ? selector(option.Value)
                 : defaultValue;
         }
 
         public static Option<T> Where<T>(this Option<T> option, Func<T, bool> predicate)
         {
-            if (option.HasNoValue)
+            if (option.IsNone)
             {
                 return default(T);
             }
@@ -36,17 +44,17 @@ namespace CSharpFunctionalExtensions
 
         public static Option<TResult> Select<T, TResult>(this Option<T> option, Func<T, TResult> selector)
         {
-            return option.HasNoValue ? default(TResult) : selector(option.Value);
+            return option.IsNone ? default(TResult) : selector(option.Value);
         }
 
         public static Option<TResult> Select<T, TResult>(this Option<T> option, Func<T, Option<TResult>> selector)
         {
-            return option.HasNoValue ? default(TResult) : selector(option.Value);
+            return option.IsNone ? default(TResult) : selector(option.Value);
         }
 
         public static void Execute<T>(this Option<T> option, Action<T> action)
         {
-            if (option.HasNoValue)
+            if (option.IsNone)
             {
                 return;
             }

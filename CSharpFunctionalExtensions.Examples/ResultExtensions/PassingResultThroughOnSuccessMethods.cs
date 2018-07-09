@@ -1,5 +1,6 @@
 ﻿using System;
-
+using static CSharpFunctionalExtensions.F;
+using Unit = System.ValueTuple;
 
 namespace CSharpFunctionalExtensions.Examples.ResultExtensions
 {
@@ -21,22 +22,22 @@ namespace CSharpFunctionalExtensions.Examples.ResultExtensions
 
         private Result<int> FunctionInt()
         {
-            return Result.Ok(1);
+            return Success(1);
         }
 
         private Result<string> FunctionString(int intValue)
         {
-            return Result.Ok("Ok");
+            return Success("Ok");
         }
 
         private Result<string> FunctionString()
         {
-            return Result.Ok("Ok");
+            return Success("Ok");
         }
 
         private Result<DateTime> FunctionDateTime(string stringValue)
         {
-            return Result.Ok(DateTime.Now);
+            return Success(DateTime.Now);
         }
     }
 }

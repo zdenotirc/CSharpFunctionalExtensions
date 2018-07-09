@@ -78,7 +78,7 @@ namespace CSharpFunctionalExtensions.Tests.OptionTests
 
             Option<MyClass> maybe2 = option.Where(x => x.Property == "Some value");
 
-            maybe2.HasValue.Should().BeTrue();
+            maybe2.IsSome.Should().BeTrue();
             maybe2.Value.Should().Be(instance);
         }
 
@@ -90,7 +90,7 @@ namespace CSharpFunctionalExtensions.Tests.OptionTests
 
             Option<MyClass> maybe2 = option.Where(x => x.Property == "Different value");
 
-            maybe2.HasValue.Should().BeFalse();
+            maybe2.IsSome.Should().BeFalse();
         }
 
         [Fact]
@@ -100,7 +100,7 @@ namespace CSharpFunctionalExtensions.Tests.OptionTests
 
             Option<MyClass> maybe2 = option.Where(x => x.Property == "Some value");
 
-            maybe2.HasValue.Should().BeFalse();
+            maybe2.IsSome.Should().BeFalse();
         }
 
         [Fact]
@@ -110,7 +110,7 @@ namespace CSharpFunctionalExtensions.Tests.OptionTests
 
             Option<string> maybe2 = option.Select(x => x.Property);
 
-            maybe2.HasValue.Should().BeTrue();
+            maybe2.IsSome.Should().BeTrue();
             maybe2.Value.Should().Be("Some value");
         }
 
@@ -121,7 +121,7 @@ namespace CSharpFunctionalExtensions.Tests.OptionTests
 
             Option<string> maybe2 = option.Select(x => x.Property);
 
-            maybe2.HasValue.Should().BeFalse();
+            maybe2.IsSome.Should().BeFalse();
         }
 
         [Fact]
@@ -131,7 +131,7 @@ namespace CSharpFunctionalExtensions.Tests.OptionTests
 
             Option<string> maybe2 = option.Select(x => GetPropertyIfExists(x));
 
-            maybe2.HasValue.Should().BeTrue();
+            maybe2.IsSome.Should().BeTrue();
             maybe2.Value.Should().Be("Some value");
         }
 
@@ -142,7 +142,7 @@ namespace CSharpFunctionalExtensions.Tests.OptionTests
 
             Option<string> maybe2 = option.Select(x => GetPropertyIfExists(x));
 
-            maybe2.HasValue.Should().BeFalse();
+            maybe2.IsSome.Should().BeFalse();
         }
 
         [Fact]

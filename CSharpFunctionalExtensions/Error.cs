@@ -13,7 +13,6 @@
         internal Error(string message)
         {
             this.Message = message;
-
         }
 
         public static implicit operator Error(string m) => new Error(m);

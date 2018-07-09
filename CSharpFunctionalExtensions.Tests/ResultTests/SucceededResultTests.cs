@@ -2,6 +2,8 @@
 using FluentAssertions;
 using Xunit;
 
+using static CSharpFunctionalExtensions.F;
+using Unit = System.ValueTuple;
 
 namespace CSharpFunctionalExtensions.Tests.ResultTests
 {
@@ -10,7 +12,7 @@ namespace CSharpFunctionalExtensions.Tests.ResultTests
         [Fact]
         public void Can_create_a_non_generic_version()
         {
-            Result result = Result.Ok();
+            Result<Unit> result = Success(Unit());
 
             result.IsFailure.Should().Be(false);
             result.IsSuccess.Should().Be(true);
@@ -21,7 +23,7 @@ namespace CSharpFunctionalExtensions.Tests.ResultTests
         {
             var myClass = new MyClass();
 
-            Result<MyClass> result = Result.Ok(myClass);
+            Result<MyClass> result = Success(myClass);
 
             result.IsFailure.Should().Be(false);
             result.IsSuccess.Should().Be(true);
@@ -31,7 +33,7 @@ namespace CSharpFunctionalExtensions.Tests.ResultTests
         [Fact]
         public void Cannot_create_without_Value()
         {
-            Action action = () => { Result.Ok((MyClass)null); };
+            Action action = () => { Success((MyClass)null); };
 
             action.ShouldThrow<ArgumentNullException>();;
         }
@@ -39,7 +41,7 @@ namespace CSharpFunctionalExtensions.Tests.ResultTests
         [Fact]
         public void Cannot_access_Error_non_generic_version()
         {
-            Result result = Result.Ok();
+            Result<Unit> result = Success(Unit());
 
             Action action = () =>
             {
@@ -52,7 +54,7 @@ namespace CSharpFunctionalExtensions.Tests.ResultTests
         [Fact]
         public void Cannot_access_Error_generic_version()
         {
-            Result<MyClass> result = Result.Ok(new MyClass());
+            Result<MyClass> result = Success(new MyClass());
 
             Action action = () =>
             {

@@ -7,7 +7,7 @@ namespace CSharpFunctionalExtensions.Tests.ValueObjectTests
 {
     public class BasicTests
     {
-        [Fact]
+        [Fact(Skip="Derived Value Object")]
         public void Derived_value_objects_dont_match()
         {
             var address = new Address("Street", "City");

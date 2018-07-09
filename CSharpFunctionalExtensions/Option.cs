@@ -3,28 +3,45 @@
 
 namespace CSharpFunctionalExtensions
 {
-    public struct Option<T> : IEquatable<Option<T>>
+    public struct Option<T> : IEquatable<None>, IEquatable<Option<T>>
     {
         private readonly T _value;
         public T Value
         {
             get
             {
-                if (HasNoValue)
+                if (IsNone)
+                {
                     throw new InvalidOperationException();
+                }
 
                 return _value;
             }
         }
 
-        public static Option<T> None => new Option<T>();
+        // public static Option<T> None => new Option<T>();
+        public static implicit operator Option<T>(None none)
+        {
+            return new Option<T>();
+        }
 
-        public bool HasValue => _value != null;
-        public bool HasNoValue => !HasValue;
+        public static implicit operator Option<T>(Some<T> some)
+        {
+            return new Option<T>(some.Value);
+        }
+
+        public bool IsSome { get; }
+        public bool IsNone => !IsSome;
 
         private Option(T value)
         {
+            if (value == null)
+            {
+                throw new ArgumentNullException();
+            }
+            
             _value = value;
+            IsSome = true;
         }
 
         public static implicit operator Option<T>(T value)
@@ -36,10 +53,15 @@ namespace CSharpFunctionalExtensions
         {
             return new Option<T>(obj);
         }
+        
+        public TResult Match<TResult>(Func<TResult> none, Func<T, TResult> some)
+        {
+            return IsSome ? some(_value) : none();
+        }
 
         public static bool operator ==(Option<T> option, T value)
         {
-            if (option.HasNoValue)
+            if (option.IsNone)
             {
                 return false;
             }
@@ -62,6 +84,11 @@ namespace CSharpFunctionalExtensions
             return !(first == second);
         }
 
+        public bool Equals(None otherNone)
+        {
+            return IsNone;
+        }
+
         public override bool Equals(object obj)
         {
             if (obj is T)
@@ -80,12 +107,12 @@ namespace CSharpFunctionalExtensions
 
         public bool Equals(Option<T> other)
         {
-            if (HasNoValue && other.HasNoValue)
+            if (IsNone && other.IsNone)
             {
                 return true;
             }
 
-            if (HasNoValue || other.HasNoValue)
+            if (IsNone || other.IsNone)
             {
                 return false;
             }
@@ -95,12 +122,32 @@ namespace CSharpFunctionalExtensions
 
         public override int GetHashCode()
         {
-            return HasNoValue ? 0 : _value.GetHashCode();
+            return IsNone ? 0 : _value.GetHashCode();
         }
 
         public override string ToString()
         {
-            return HasNoValue ? "No value" : Value.ToString();
+            return IsNone ? "No value" : Value.ToString();
+        }
+    }
+    
+    public struct None
+    {
+        internal static readonly None Default = new None();
+    }
+
+    public struct Some<T>
+    {
+        internal T Value { get; }
+
+        internal Some(T value)
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value), ErrorMessages.ErrorWrapNullInSome);
+            }
+
+            Value = value;
         }
     }
 }

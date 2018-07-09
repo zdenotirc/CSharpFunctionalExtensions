@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Xunit;
-
+using static CSharpFunctionalExtensions.F;
+using Unit = System.ValueTuple;
 
 namespace CSharpFunctionalExtensions.Tests.ResultTests
 {
@@ -11,12 +12,12 @@ namespace CSharpFunctionalExtensions.Tests.ResultTests
         {
             Error error1 = "Failure 1";
             Error error2 = "Failure 2";
-            
-            Result result1 = Result.Ok();
-            Result result2 = Result.Fail(error1);
-            Result result3 = Result.Fail(error2);
 
-            Result result = Result.FirstFailureOrSuccess(result1, result2, result3);
+            Result<Unit> result1 = Success(Unit());
+            Result<Unit> result2 = Failure(error1);
+            Result<Unit> result3 = Failure(error2);
+
+            var result = FirstFailureOrSuccess(result1, result2, result3);
 
             result.IsFailure.Should().BeTrue();
             result.Error.Should().Be(error1);
@@ -25,11 +26,12 @@ namespace CSharpFunctionalExtensions.Tests.ResultTests
         [Fact]
         public void FirstFailureOrSuccess_returns_Ok_if_no_failures()
         {
-            Result result1 = Result.Ok();
-            Result result2 = Result.Ok();
-            Result result3 = Result.Ok();
+            var result1 = Success(Unit());
+            var result2 = Success(Unit());
+            var result3 = Success(Unit());
+            var result4 = Success(1);
 
-            Result result = Result.FirstFailureOrSuccess(result1, result2, result3);
+            var result = FirstFailureOrSuccess(result1, result2, result3);
 
             result.IsSuccess.Should().BeTrue();
         }

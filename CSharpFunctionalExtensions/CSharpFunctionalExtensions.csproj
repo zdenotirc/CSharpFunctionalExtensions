@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard1.3;net40;net45;net461</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <PackageId>CSharpFunctionalExtensions</PackageId>
     <PackageVersion>1.10.0</PackageVersion>
     <Authors>Vladimir Khorikov</Authors>
@@ -23,6 +23,9 @@
   <!-- Standard1.3 doesn't have ISerializable and needs an additional reference -->
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
     <PackageReference Include="System.Runtime.Serialization.Formatters" Version="4.3.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
   <!-- Set titles so the dlls are distinguishable from each other -->
   <PropertyGroup Condition="'$(TargetFramework)'=='net40'">

@@ -1,6 +1,7 @@
 ﻿using System;
 using FluentAssertions;
 using Xunit;
+using static CSharpFunctionalExtensions.F;
 
 namespace CSharpFunctionalExtensions.Tests.OptionTests
 {
@@ -11,24 +12,24 @@ namespace CSharpFunctionalExtensions.Tests.OptionTests
         {
             Option<MyClass> option = null;
 
-            option.HasValue.Should().BeFalse();
-            option.HasNoValue.Should().BeTrue();
+            option.IsSome.Should().BeFalse();
+            option.IsNone.Should().BeTrue();
         }
 
         [Fact]
         public void Can_create_a_maybe_none()
         {
-            Option<MyClass> option = Option<MyClass>.None;
+            Option<MyClass> option = F.None;
 
-            option.HasValue.Should().BeFalse();
-            option.HasNoValue.Should().BeTrue();
+            option.IsSome.Should().BeFalse();
+            option.IsNone.Should().BeTrue();
         }
 
         [Fact]
         public void Nullable_maybe_is_same_as_maybe_none()
         {
             Option<MyClass> nullableOption = null;
-            Option<MyClass> optionNone = Option<MyClass>.None;
+            Option<MyClass> optionNone = F.None;
 
             nullableOption.Should().Be(optionNone);
         }
@@ -53,8 +54,8 @@ namespace CSharpFunctionalExtensions.Tests.OptionTests
 
             Option<MyClass> option = instance;
 
-            option.HasValue.Should().BeTrue();
-            option.HasNoValue.Should().BeFalse();
+            option.IsSome.Should().BeTrue();
+            option.IsNone.Should().BeFalse();
             option.Value.Should().Be(instance);
         }
 

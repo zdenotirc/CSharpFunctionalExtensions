@@ -1,9 +1,12 @@
 using System.Threading.Tasks;
+using static CSharpFunctionalExtensions.F;
+using Unit = System.ValueTuple;
 
 namespace CSharpFunctionalExtensions.Examples.ResultExtensions
 {
     public class ExampleWithOnFailureMethod
     {
+        /*
         public string OnFailure_non_async(int customerId, decimal moneyAmount)
         {
             var paymentGateway = new PaymentGateway();
@@ -17,6 +20,22 @@ namespace CSharpFunctionalExtensions.Examples.ResultExtensions
                     customer => database.Save(customer)
                         .OnFailure(() => paymentGateway.RollbackLastTransaction()))
                 .OnBoth(result => result.IsSuccess ? "OK" : result.Error.Message);
+        }*/
+        
+        public string OnFailure_non_async(int customerId, decimal moneyAmount)
+        {
+            var paymentGateway = new PaymentGateway();
+            var database = new Database();
+
+            return GetById(customerId)
+                .ToResult("Customer with such Id is not found: " + customerId)
+                .Then(customer => customer.AddBalance(moneyAmount))
+                .Then(customer => paymentGateway.ChargePayment(customer, moneyAmount).Map((c) => customer))
+                .Then(customer => database.Save(customer)
+                        .OnFailure(() => paymentGateway.RollbackLastTransaction()))
+                .Match(
+                    result => "Ok",
+                    error => error.Message);
         }
 
         private Option<Customer> GetById(long id)
@@ -34,9 +53,9 @@ namespace CSharpFunctionalExtensions.Examples.ResultExtensions
 
         private class PaymentGateway
         {
-            public Result ChargePayment(Customer customer, decimal moneyAmount)
+            public Result<Unit> ChargePayment(Customer customer, decimal moneyAmount)
             {
-                return Result.Ok();
+                return Success(Unit());
             }
 
             public void RollbackLastTransaction()
@@ -52,9 +71,9 @@ namespace CSharpFunctionalExtensions.Examples.ResultExtensions
 
         private class Database
         {
-            public Result Save(Customer customer)
+            public Result<Unit> Save(Customer customer)
             {
-                return Result.Ok();
+                return Success(Unit());
             }
         }
     }
